@@ -1,0 +1,55 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE beans PUBLIC '-//SPRING//DTD BEAN 2.0//EN' 'http://www.springframework.org/dtd/spring-beans-2.0.dtd'>
+
+<beans>
+	<!-- Abstract Content Streaming Web Script -->
+	<bean id="webscript.org.ecmkit.web.script.stream" class="com.ecmkit.web.script.imagepreview.StreamImagePreview"
+		parent="webscript" scope="prototype">
+		<property name="permissionService" ref="PermissionService" />
+		<property name="nodeService" ref="NodeService" />
+		<property name="contentService" ref="ContentService" />
+		<property name="mimetypeService" ref="MimetypeService" />
+		<property name="previewService" ref="imagePreviewService" />
+	</bean>
+	
+	<bean id="webscript.registration.imageQuickSharePreview.get" class="com.ecmkit.web.script.quickshare.QuickShareImagePreview" 
+		parent="webscript.org.alfresco.repository.quickshare.content-thumbnail-noauth.get">
+		<property name="previewService" ref="imagePreviewService" />
+    </bean>
+
+	<bean id="webscript.registration.imageQuickSharePage.get" class="com.ecmkit.web.script.quickshare.GetImagePreviewPageCount"
+		parent="webscript">
+		<property name="quickShareService" ref="QuickShareService"/>
+		<property name="nodeService" ref="NodeService" />
+		<property name="thumbnailService" ref="ThumbnailService" />
+		<property name="serviceRegistry" ref="ServiceRegistry"/>
+		<property name="previewService" ref="imagePreviewService" />
+		<property name="contentService" ref="ContentService" />
+	</bean>
+
+	<bean id="imageConvertService" class="com.ecmkit.service.convert.impl.ImageConvertServiceImpl">
+		<property name="imageFileService" ref="imageFileService" />
+		<property name="convertScale" value="4" />
+		<property name="convertTool" value="/home/time_master/servers/alfresco-4.0.d/common/bin/convert" /> 
+		<!-- <property name="convertTool" value="/home/cdc/servers/alfresco-4.2.b/common/bin/convert" />-->
+	</bean>
+	<bean id="imageFileService" class="com.ecmkit.service.imagefile.impl.ImageFileServiceImpl">
+		<property name="rootPath" value="/tmp/alfrescoImagePreview" />
+	</bean>
+	<bean id="imagePreviewService" class="com.ecmkit.service.preview.impl.PreviewServiceImpl">
+		<property name="imageService" ref="imageFileService" />
+		<property name="imageConvertService" ref="imageConvertService" />
+		<property name="contentService" ref="ContentService" />
+		<property name="nodeService" ref="NodeService" />
+	</bean>
+	
+  <bean id="imagePreviewServiceScript" parent="baseJavaScriptExtension" class="com.ecmkit.service.script.ScriptPreviewService">
+      <property name="extensionName">
+          <value>imagePreviewService</value>
+      </property>
+      <!-- Creates Sites which require the ServiceRegistry -->
+      <property name="serviceRegistry" ref="ServiceRegistry"/>
+      <property name="previewService" ref="imagePreviewService"/>
+  </bean>
+  
+</beans>

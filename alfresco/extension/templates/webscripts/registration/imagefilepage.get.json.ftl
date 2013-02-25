@@ -1,0 +1,3 @@
+{
+	"totalPageNumber":"${totalPageNumber}"
+}

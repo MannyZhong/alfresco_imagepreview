@@ -1,0 +1,10 @@
+<webscript>
+  <shortname>Get pdf rendition page count</shortname>
+  <description><![CDATA[
+  Get the page count of the target pdf rendition.
+  ]]></description>
+  <url>/api/internal/shared/node/{shared_id}/content{property}/filepagenumber/{thumbnailname}?a={attach?}</url>
+  <format default="json"/>
+  <authentication>none</authentication>
+  <transaction>required</transaction>
+</webscript>
